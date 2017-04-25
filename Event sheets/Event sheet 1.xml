@@ -3,6 +3,7 @@
     <!--All the 'name' attributes are ignored by Construct 2 - they are there for readability only.-->
     <name>Event sheet 1</name>
     <events>
+        <variable constant="1" name="BOX_MAXNBROFCREEPS" sid="677936633520112" static="0" type="number">4</variable>
         <variable constant="1" name="TILESIZE" sid="193001311479286" static="0" type="number">64</variable>
         <variable constant="1" name="BOXSIZE_TILE" sid="226253416290829" static="0" type="number">10</variable>
         <event-block sid="334996042582844">
@@ -61,6 +62,21 @@
                         <action id="0" name="Call function" sid="820055069195644" type="Function">
                             <param id="0" name="Name">&quot;OpenConnections&quot;</param>
                             <param id="1" name="Parameter {n}">(loopindex(&quot;BoxIDX&quot;) % 2) * TILESIZE * BOXSIZE_TILE + (BOXSIZE_TILE - 1) * TILESIZE{###}int(loopindex(&quot;BoxIDX&quot;) / 2) * TILESIZE * BOXSIZE_TILE{###}1</param>
+                        </action>
+                    </actions>
+                </event-block>
+                <event-block sid="367751396827141">
+                    <conditions>
+                        <condition id="-10" name="For" sid="941375807779588" type="System">
+                            <param id="0" name="Name">&quot;BoxIDX&quot;</param>
+                            <param id="1" name="Start index">0</param>
+                            <param id="2" name="End index">BoxNbr-1</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="0" name="Call function" sid="882126341966524" type="Function">
+                            <param id="0" name="Name">&quot;SpawnCreeps&quot;</param>
+                            <param id="1" name="Parameter {n}">(loopindex(&quot;BoxIDX&quot;) % 3) * TILESIZE * BOXSIZE_TILE{###}int(loopindex(&quot;BoxIDX&quot;) / 3) * TILESIZE * BOXSIZE_TILE</param>
                         </action>
                     </actions>
                 </event-block>
@@ -384,6 +400,90 @@
             <actions>
                 <action id="-26" name="Restart layout" sid="677763598246163" type="System" />
             </actions>
+        </event-block>
+        <event-block sid="295958960740376">
+            <conditions>
+                <condition id="0" name="On function" sid="667553691546856" type="Function">
+                    <param id="0" name="Name">&quot;SpawnCreeps&quot;</param>
+                </condition>
+            </conditions>
+            <actions />
+            <sub-events>
+                <variable constant="0" name="SafeAreaSize" sid="925984098074434" static="0" type="number">0</variable>
+                <variable constant="0" name="NbrOfCreeps" sid="484911475158920" static="0" type="number">0</variable>
+                <variable comment="Expressed in number of tiles" constant="0" name="PositionX" sid="717684452971273" static="0" type="number">0</variable>
+                <variable constant="0" name="Orientation" sid="846940484601969" static="0" type="number">0</variable>
+                <variable comment="Expressed in number of tiles" constant="0" name="PositionY" sid="283645595755453" static="0" type="number">0</variable>
+                <event-block sid="429960907091478">
+                    <conditions />
+                    <actions>
+                        <action id="-9" name="Set value" sid="174275208305445" type="System">
+                            <param id="0" name="Variable">NbrOfCreeps</param>
+                            <param id="1" name="Value">int(random(1, BOX_MAXNBROFCREEPS + 1))</param>
+                        </action>
+                    </actions>
+                    <sub-events>
+                        <event-block sid="659325235160097">
+                            <conditions>
+                                <condition id="-10" name="For" sid="269567462404064" type="System">
+                                    <param id="0" name="Name">&quot;CreepIDX&quot;</param>
+                                    <param id="1" name="Start index">1</param>
+                                    <param id="2" name="End index">NbrOfCreeps</param>
+                                </condition>
+                            </conditions>
+                            <actions>
+                                <action id="-9" name="Set value" sid="586868639033935" type="System">
+                                    <param id="0" name="Variable">PositionX</param>
+                                    <param id="1" name="Value">int(random(1, BOXSIZE_TILE-1))</param>
+                                </action>
+                                <action id="-9" name="Set value" sid="449291871399815" type="System">
+                                    <param id="0" name="Variable">PositionY</param>
+                                    <param id="1" name="Value">int(random(1, BOXSIZE_TILE-1))</param>
+                                </action>
+                                <action id="-9" name="Set value" sid="786532279892281" type="System">
+                                    <param id="0" name="Variable">Orientation</param>
+                                    <param id="1" name="Value">int(random(2))</param>
+                                </action>
+                                <action id="-3" name="Create object" sid="504031553194677" type="System">
+                                    <param id="0" name="Object to create">CreepSafeArea</param>
+                                    <param id="1" name="Layer">1</param>
+                                    <param id="2" name="X">Function.Param(0) + PositionX*TILESIZE</param>
+                                    <param id="3" name="Y">Function.Param(1) + PositionY*TILESIZE</param>
+                                </action>
+                                <action id="5" name="Set frame" sid="122906614497479" type="CreepSafeArea">
+                                    <param id="0" name="Frame number">Orientation</param>
+                                </action>
+                            </actions>
+                            <sub-events>
+                                <event-block sid="677793323995392">
+                                    <conditions>
+                                        <condition id="-23" name="While" sid="248876504075779" type="System" />
+                                        <condition id="1" name="Is overlapping another object" sid="411908988889643" type="CreepSafeArea">
+                                            <param id="0" name="Object">Block</param>
+                                        </condition>
+                                        <condition id="-8" name="Compare two values" sid="599867145239555" type="System">
+                                            <param id="0" name="First value">CreepSafeArea.X</param>
+                                            <param id="1" name="Comparison">4</param>
+                                            <param id="2" name="Second value">Function.Param(0) + (TILESIZE * BOXSIZE_TILE)</param>
+                                        </condition>
+                                        <condition id="-8" name="Compare two values" sid="769559999370229" type="System">
+                                            <param id="0" name="First value">CreepSafeArea.Y</param>
+                                            <param id="1" name="Comparison">4</param>
+                                            <param id="2" name="Second value">Function.Param(1) + (TILESIZE * BOXSIZE_TILE)</param>
+                                        </condition>
+                                    </conditions>
+                                    <actions>
+                                        <action id="-3" name="Set position" sid="912876472944389" type="CreepSafeArea">
+                                            <param id="0" name="X">Self.X + floor(random(-2, 2))</param>
+                                            <param id="1" name="Y">Self.Y + floor(random(-2, 2))</param>
+                                        </action>
+                                    </actions>
+                                </event-block>
+                            </sub-events>
+                        </event-block>
+                    </sub-events>
+                </event-block>
+            </sub-events>
         </event-block>
     </events>
 </c2eventsheet>
