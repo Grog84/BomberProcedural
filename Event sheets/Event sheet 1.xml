@@ -43,8 +43,20 @@
                             <param id="0" name="Name">&quot;CreateBoxBorders&quot;</param>
                             <param id="1" name="Parameter {n}">(loopindex(&quot;BoxIDX&quot;) % 3) * TILESIZE * BOXSIZE_TILE{###}int(loopindex(&quot;BoxIDX&quot;) / 3) * TILESIZE * BOXSIZE_TILE</param>
                         </action>
-                        <action id="1" name="Append text" sid="651791738788089" type="DEBUG">
-                            <param id="0" name="Text">(loopindex(&quot;BoxIDX&quot;) % 3) * TILESIZE * BOXSIZE_TILE &amp; &quot; - &quot; &amp; int(loopindex(&quot;BoxIDX&quot;) / 3) * TILESIZE * BOXSIZE_TILE &amp; &quot;/n&quot;</param>
+                    </actions>
+                </event-block>
+                <event-block sid="913031991387383">
+                    <conditions>
+                        <condition id="-10" name="For" sid="364659520957019" type="System">
+                            <param id="0" name="Name">&quot;BoxIDX&quot;</param>
+                            <param id="1" name="Start index">0</param>
+                            <param id="2" name="End index">BoxNbr-4</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="0" name="Call function" sid="725399532459973" type="Function">
+                            <param id="0" name="Name">&quot;OpenConnections&quot;</param>
+                            <param id="1" name="Parameter {n}">(loopindex(&quot;BoxIDX&quot;) % 3) * TILESIZE * BOXSIZE_TILE{###}int(loopindex(&quot;BoxIDX&quot;) / 3) * TILESIZE * BOXSIZE_TILE + (BOXSIZE_TILE - 1) * TILESIZE</param>
                         </action>
                     </actions>
                 </event-block>
@@ -128,6 +140,43 @@
                 </event-block>
             </sub-events>
         </event-block>
+        <event-block sid="162361976313852">
+            <conditions>
+                <condition id="0" name="On function" sid="909386151398376" type="Function">
+                    <param id="0" name="Name">&quot;OpenConnections&quot;</param>
+                </condition>
+            </conditions>
+            <actions />
+            <sub-events>
+                <variable constant="0" name="RandPos" sid="490398654772264" static="0" type="number">0</variable>
+                <event-block sid="963189716525691">
+                    <conditions />
+                    <actions>
+                        <action id="-9" name="Set value" sid="995732447744716" type="System">
+                            <param id="0" name="Variable">RandPos</param>
+                            <param id="1" name="Value">int(random(1, BOXSIZE_TILE-2))</param>
+                        </action>
+                        <action id="-3" name="Create object" sid="239709112202814" type="System">
+                            <param id="0" name="Object to create">Door</param>
+                            <param id="1" name="Layer">1</param>
+                            <param id="2" name="X">Function.Param(0) + RandPos * TILESIZE</param>
+                            <param id="3" name="Y">Function.Param(1)</param>
+                        </action>
+                    </actions>
+                </event-block>
+            </sub-events>
+        </event-block>
+        <event-block sid="301080113440177">
+            <conditions>
+                <condition id="1" name="Is overlapping another object" sid="570473380228751" type="Door">
+                    <param id="0" name="Object">Block</param>
+                </condition>
+            </conditions>
+            <actions>
+                <action id="-9" name="Destroy" sid="420272633878703" type="Block" />
+                <action id="-9" name="Destroy" sid="561177333051126" type="Door" />
+            </actions>
+        </event-block>
         <event-group description="" sid="606442799583514" title="CamMove">
             <sub-events>
                 <event-block sid="242490787727243">
@@ -158,11 +207,29 @@
                             <param id="0" name="X">Self.OldX + (TILESIZE * BOXSIZE_TILE)</param>
                             <param id="1" name="Y">Self.OldY</param>
                         </action>
-                        <action id="0" name="Call function" sid="199744204414344" type="Function">
-                            <param id="0" name="Name">&quot;SetOldCamPosition&quot;</param>
-                            <param id="1" name="Parameter {n}"></param>
-                        </action>
                     </actions>
+                    <sub-events>
+                        <event-block sid="210532665410260">
+                            <conditions>
+                                <condition id="-4" name="Is outside layout" sid="723220878655929" type="CamCenter" />
+                            </conditions>
+                            <actions>
+                                <action id="-3" name="Set position" sid="258899784591909" type="CamCenter">
+                                    <param id="0" name="X">Self.OldX</param>
+                                    <param id="1" name="Y">Self.OldY</param>
+                                </action>
+                            </actions>
+                        </event-block>
+                        <event-block sid="417188805812406">
+                            <conditions />
+                            <actions>
+                                <action id="0" name="Call function" sid="199744204414344" type="Function">
+                                    <param id="0" name="Name">&quot;SetOldCamPosition&quot;</param>
+                                    <param id="1" name="Parameter {n}"></param>
+                                </action>
+                            </actions>
+                        </event-block>
+                    </sub-events>
                 </event-block>
                 <event-block sid="213732245143746">
                     <conditions>
@@ -175,11 +242,29 @@
                             <param id="0" name="X">Self.OldX </param>
                             <param id="1" name="Y">Self.OldY + (TILESIZE * BOXSIZE_TILE)</param>
                         </action>
-                        <action id="0" name="Call function" sid="906371999196437" type="Function">
-                            <param id="0" name="Name">&quot;SetOldCamPosition&quot;</param>
-                            <param id="1" name="Parameter {n}"></param>
-                        </action>
                     </actions>
+                    <sub-events>
+                        <event-block sid="304529610702537">
+                            <conditions>
+                                <condition id="-4" name="Is outside layout" sid="511407699455288" type="CamCenter" />
+                            </conditions>
+                            <actions>
+                                <action id="-3" name="Set position" sid="657430352950298" type="CamCenter">
+                                    <param id="0" name="X">Self.OldX</param>
+                                    <param id="1" name="Y">Self.OldY</param>
+                                </action>
+                            </actions>
+                        </event-block>
+                        <event-block sid="708779581744955">
+                            <conditions />
+                            <actions>
+                                <action id="0" name="Call function" sid="325728576181784" type="Function">
+                                    <param id="0" name="Name">&quot;SetOldCamPosition&quot;</param>
+                                    <param id="1" name="Parameter {n}"></param>
+                                </action>
+                            </actions>
+                        </event-block>
+                    </sub-events>
                 </event-block>
                 <event-block sid="103193141891180">
                     <conditions>
@@ -192,11 +277,29 @@
                             <param id="0" name="X">Self.OldX - (TILESIZE * BOXSIZE_TILE)</param>
                             <param id="1" name="Y">Self.OldY</param>
                         </action>
-                        <action id="0" name="Call function" sid="354042869995340" type="Function">
-                            <param id="0" name="Name">&quot;SetOldCamPosition&quot;</param>
-                            <param id="1" name="Parameter {n}"></param>
-                        </action>
                     </actions>
+                    <sub-events>
+                        <event-block sid="173563899484231">
+                            <conditions>
+                                <condition id="-4" name="Is outside layout" sid="589382293798747" type="CamCenter" />
+                            </conditions>
+                            <actions>
+                                <action id="-3" name="Set position" sid="525657766244556" type="CamCenter">
+                                    <param id="0" name="X">Self.OldX</param>
+                                    <param id="1" name="Y">Self.OldY</param>
+                                </action>
+                            </actions>
+                        </event-block>
+                        <event-block sid="140916676282113">
+                            <conditions />
+                            <actions>
+                                <action id="0" name="Call function" sid="901298034439849" type="Function">
+                                    <param id="0" name="Name">&quot;SetOldCamPosition&quot;</param>
+                                    <param id="1" name="Parameter {n}"></param>
+                                </action>
+                            </actions>
+                        </event-block>
+                    </sub-events>
                 </event-block>
                 <event-block sid="490276688603803">
                     <conditions>
@@ -209,13 +312,41 @@
                             <param id="0" name="X">Self.OldX</param>
                             <param id="1" name="Y">Self.OldY - (TILESIZE * BOXSIZE_TILE)</param>
                         </action>
-                        <action id="0" name="Call function" sid="763994381467908" type="Function">
-                            <param id="0" name="Name">&quot;SetOldCamPosition&quot;</param>
-                            <param id="1" name="Parameter {n}"></param>
-                        </action>
                     </actions>
+                    <sub-events>
+                        <event-block sid="671125965937221">
+                            <conditions>
+                                <condition id="-4" name="Is outside layout" sid="307171916664333" type="CamCenter" />
+                            </conditions>
+                            <actions>
+                                <action id="-3" name="Set position" sid="817057352222631" type="CamCenter">
+                                    <param id="0" name="X">Self.OldX</param>
+                                    <param id="1" name="Y">Self.OldY</param>
+                                </action>
+                            </actions>
+                        </event-block>
+                        <event-block sid="368761344369359">
+                            <conditions />
+                            <actions>
+                                <action id="0" name="Call function" sid="134569738660890" type="Function">
+                                    <param id="0" name="Name">&quot;SetOldCamPosition&quot;</param>
+                                    <param id="1" name="Parameter {n}"></param>
+                                </action>
+                            </actions>
+                        </event-block>
+                    </sub-events>
                 </event-block>
             </sub-events>
         </event-group>
+        <event-block sid="462947754391187">
+            <conditions>
+                <condition id="0" name="On key pressed" sid="589196275851413" type="Keyboard">
+                    <param id="0" name="Key">32 (Barra Spaziatrice)</param>
+                </condition>
+            </conditions>
+            <actions>
+                <action id="-26" name="Restart layout" sid="677763598246163" type="System" />
+            </actions>
+        </event-block>
     </events>
 </c2eventsheet>
