@@ -464,12 +464,12 @@
                                         <condition id="-8" name="Compare two values" sid="599867145239555" type="System">
                                             <param id="0" name="First value">CreepSafeArea.X</param>
                                             <param id="1" name="Comparison">4</param>
-                                            <param id="2" name="Second value">Function.Param(0) + (TILESIZE * BOXSIZE_TILE)</param>
+                                            <param id="2" name="Second value">Function.Param(0) + (TILESIZE * (BOXSIZE_TILE-2))</param>
                                         </condition>
                                         <condition id="-8" name="Compare two values" sid="769559999370229" type="System">
                                             <param id="0" name="First value">CreepSafeArea.Y</param>
                                             <param id="1" name="Comparison">4</param>
-                                            <param id="2" name="Second value">Function.Param(1) + (TILESIZE * BOXSIZE_TILE)</param>
+                                            <param id="2" name="Second value">Function.Param(1) + (TILESIZE * (BOXSIZE_TILE-2))</param>
                                         </condition>
                                     </conditions>
                                     <actions>
