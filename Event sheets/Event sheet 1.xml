@@ -122,7 +122,7 @@
                             <param id="0" name="Object to create">Block</param>
                             <param id="1" name="Layer">1</param>
                             <param id="2" name="X">Function.Param(0)</param>
-                            <param id="3" name="Y">Function.Param(0) + TILESIZE + loopindex(&quot;TileIDX&quot;) * TILESIZE</param>
+                            <param id="3" name="Y">Function.Param(1) + TILESIZE + loopindex(&quot;TileIDX&quot;) * TILESIZE</param>
                         </action>
                     </actions>
                 </event-block>
