@@ -268,10 +268,10 @@
                         <x>-384</x>
                         <y>960</y>
                         <z>0</z>
-                        <width>62</width>
+                        <width>60.0625</width>
                         <height>128</height>
                         <depth>0</depth>
-                        <hotspotX>0.015625</hotspotX>
+                        <hotspotX>-0.016129032</hotspotX>
                         <hotspotY>0</hotspotY>
                         <angle>0</angle>
                         <opacity>0.5</opacity>
